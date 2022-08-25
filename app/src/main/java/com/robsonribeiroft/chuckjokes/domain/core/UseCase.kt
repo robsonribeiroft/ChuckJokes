@@ -1,9 +1,9 @@
 package com.robsonribeiroft.chuckjokes.domain.core
 
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -17,7 +17,7 @@ fun <T> CoroutineScope.launch(
     onError: ((Throwable) -> Unit) = {},
     onSuccess: (T) -> Unit = {}
 ) {
-    this.launch (CoroutineExceptionHandler { _, throwable -> onError(throwable) }) {
+    this.launch {
         try {
             useCase
                 .flowOn(runOnDispatcher)
