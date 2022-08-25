@@ -1,5 +1,6 @@
 package com.robsonribeiroft.chuckjokes.domain.interactors
 
+import android.util.Log
 import com.robsonribeiroft.chuckjokes.base_feature.emptyString
 import com.robsonribeiroft.chuckjokes.domain.core.launch
 import com.robsonribeiroft.chuckjokes.domain.exception.InvalidParamException
@@ -44,10 +45,10 @@ class GetJokeUseCaseTest {
     @Test
     fun `WHEN usecase is callled SHOULD be success`() = runTest{
         coEvery { jokeRepository.getJokeByCategory("animal") } coAnswers  { flowOf(emptyString()) }
+
         launch(
             useCase = interactor("animal"),
             runOnDispatcher = testRunDispatcher,
-            onError = {  },
             onSuccess = { assertTrue { it.isEmpty() } }
         )
     }
@@ -56,12 +57,10 @@ class GetJokeUseCaseTest {
     @Test
     fun `WHEN usecase is callled SHOULD throw a exception for empty string`() = runTest{
         coEvery { jokeRepository.getJokeByCategory("") } coAnswers  { flowOf(emptyString()) }
-        val expectedThrowable: Throwable = InvalidParamException()
         launch(
             useCase = interactor(""),
             runOnDispatcher = testRunDispatcher,
-            onError = { assertEquals(expectedThrowable, it) },
-            onSuccess = { }
+            onError = { assertTrue( it is InvalidParamException) }
         )
     }
 
