@@ -18,8 +18,12 @@ fun <T> CoroutineScope.launch(
     onSuccess: (T) -> Unit = {}
 ) {
     this.launch (CoroutineExceptionHandler { _, throwable -> onError(throwable) }) {
-        useCase
-            .flowOn(runOnDispatcher)
-            .collect { onSuccess(it) }
+        try {
+            useCase
+                .flowOn(runOnDispatcher)
+                .collect { onSuccess(it) }
+        } catch (throwable: Throwable) {
+            onError(throwable)
+        }
     }
 }
