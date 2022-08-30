@@ -45,7 +45,6 @@ class GetCategoriesUseCaseTest {
         launch(
             useCase = interactor(),
             runOnDispatcher = testRunDispatcher,
-            onError = {  },
             onSuccess = { assertTrue { it.isEmpty() } }
         )
     }
