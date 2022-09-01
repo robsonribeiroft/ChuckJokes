@@ -22,12 +22,12 @@ fun <T> MutableStateFlow<UiState<T>>.updateOnError(message: String?) = update {
     UiState(status = ERROR,  data = this.value.data, message = message)
 }
 
-fun <T> MutableStateFlow<UiState<T>>.setLoading() = update {
-    UiState(LOADING, data = this.value.data)
+fun <T> MutableStateFlow<UiState<T>>.updateOnLoading() = update {
+    UiState(LOADING, data = this.value.data, message = this.value.message)
 }
 
-fun <T> MutableStateFlow<UiState<T>>.setIdle() = update {
-    UiState(IDLE, data = this.value.data)
+fun <T> MutableStateFlow<UiState<T>>.updateOnIdle() = update {
+    UiState(IDLE, data = this.value.data, message = this.value.message)
 }
 
 suspend fun <T> StateFlow<UiState<T>>.onPostValue(
