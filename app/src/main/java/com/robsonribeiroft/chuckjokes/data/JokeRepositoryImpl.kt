@@ -1,18 +1,27 @@
 package com.robsonribeiroft.chuckjokes.data
 
+import com.robsonribeiroft.chuckjokes.base_feature.emptyString
 import com.robsonribeiroft.chuckjokes.data.remote.ChuckJokeWebService
+import com.robsonribeiroft.chuckjokes.domain.core.Resource
+import com.robsonribeiroft.chuckjokes.domain.core.Resource.*
 import com.robsonribeiroft.chuckjokes.domain.repository.JokeRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class JokeRepositoryImpl(
     private val remote: ChuckJokeWebService
 ) : JokeRepository {
-    override fun getJokeByCategory(category: String): Flow<String> = flow {
-        emit(remote.getJokeByCategory(category).joke)
+    override suspend fun getJokeByCategory(category: String): Resource<String> {
+        return try {
+            Success(remote.getJokeByCategory(category).joke)
+        } catch (exception: Exception) {
+            return Failure(exception.message ?: emptyString())
+        }
     }
 
-    override fun getCategories(): Flow<List<String>> = flow {
-        emit(remote.getAllCategories())
+    override suspend fun getCategories(): Resource<List<String>>  {
+        return try {
+            Success(remote.getAllCategories())
+        } catch (exception: Exception) {
+            return Failure(exception.message ?: emptyString())
+        }
     }
 }

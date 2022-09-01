@@ -1,8 +1,8 @@
 package com.robsonribeiroft.chuckjokes.domain.repository
 
-import kotlinx.coroutines.flow.Flow
+import com.robsonribeiroft.chuckjokes.domain.core.Resource
 
 interface JokeRepository {
-    fun getJokeByCategory(category: String): Flow<String>
-    fun getCategories(): Flow<List<String>>
+    suspend fun getJokeByCategory(category: String): Resource<String>
+    suspend fun getCategories(): Resource<List<String>>
 }

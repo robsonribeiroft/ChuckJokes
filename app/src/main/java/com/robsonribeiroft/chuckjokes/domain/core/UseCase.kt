@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 abstract class UseCase<T, in Params> {
-    abstract operator fun invoke(params: Params? = null): Flow<T>
+    abstract suspend operator fun invoke(params: Params? = null): Resource<T>
 }
 
 fun <T> CoroutineScope.launch(

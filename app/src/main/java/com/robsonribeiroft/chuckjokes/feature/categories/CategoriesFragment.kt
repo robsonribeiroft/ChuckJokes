@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.robsonribeiroft.chuckjokes.presentation.MainViewModel
 import com.robsonribeiroft.chuckjokes.R
 import com.robsonribeiroft.chuckjokes.core.gone
 import com.robsonribeiroft.chuckjokes.core.visible
 import com.robsonribeiroft.chuckjokes.databinding.FragmentCategoriesBinding
+import com.robsonribeiroft.chuckjokes.presentation.MainViewModel
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CategoriesFragment: Fragment() {
@@ -53,22 +55,24 @@ class CategoriesFragment: Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.categories.observe(viewLifecycleOwner) { state ->
-            state.stateHandler(
-                loading = {
-                    binding.recyclerView.gone()
-                    binding.stateView.setLoading()
-                },
-                onError = {
-                    binding.recyclerView.gone()
-                    binding.stateView.setError(it)
-                },
-                onSuccess = { categories: List<String> ->
-                    binding.recyclerView.visible()
-                    binding.stateView.gone()
-                    adapter.submitList(categories)
-                }
-            )
+        lifecycleScope.launchWhenCreated {
+            viewModel.categories.collectLatest { categoriesState ->
+                categoriesState.stateHandler(
+                    loading = {
+                        binding.recyclerView.gone()
+                        binding.stateView.setLoading()
+                    },
+                    onError = { message: String, categories: List<String>? ->
+                        binding.recyclerView.gone()
+                        binding.stateView.setError(message)
+                    },
+                    onSuccess = { categories: List<String> ->
+                        binding.recyclerView.visible()
+                        binding.stateView.gone()
+                        adapter.submitList(categories)
+                    }
+                )
+            }
         }
     }
 

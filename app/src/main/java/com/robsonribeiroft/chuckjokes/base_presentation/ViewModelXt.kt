@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 fun <T> uiState() = lazy {
-    MutableLiveData<UIState<T>>()
+    MutableLiveData<UiState<T>>()
 }
 
 fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this

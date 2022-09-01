@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.robsonribeiroft.chuckjokes.presentation.MainViewModel
 import com.robsonribeiroft.chuckjokes.core.gone
-import com.robsonribeiroft.chuckjokes.core.onPostValue
 import com.robsonribeiroft.chuckjokes.core.visible
 import com.robsonribeiroft.chuckjokes.databinding.FragmentJokeBinding
+import com.robsonribeiroft.chuckjokes.feature.model.JokeBindingModel
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class JokeFragment: Fragment() {
@@ -42,22 +44,25 @@ class JokeFragment: Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.joke.onPostValue(
-            viewLifecycleOwner,
-            loading = {
-                binding.textJoke.gone()
-                binding.stateView.setLoading()
-            },
-            onError = {
-                binding.textJoke.gone()
-                binding.stateView.setError(it)
-            },
-            onSuccess = { joke ->
-                binding.stateView.gone()
-                binding.textJoke.visible()
-                binding.textJoke.text = joke
+        lifecycleScope.launchWhenCreated {
+            viewModel.joke.collectLatest { jokeState ->
+                jokeState.stateHandler(
+                    loading = {
+                        binding.textJoke.gone()
+                        binding.stateView.setLoading()
+                    },
+                    onError = { message: String, _: JokeBindingModel ->
+                        binding.textJoke.gone()
+                        binding.stateView.setError(message)
+                    },
+                    onSuccess = { jokeBindingModel ->
+                        binding.stateView.gone()
+                        binding.textJoke.visible()
+                        binding.textJoke.text = jokeBindingModel.joke
+                    }
+                )
             }
-        )
+        }
     }
 
     override fun onDestroyView() {
