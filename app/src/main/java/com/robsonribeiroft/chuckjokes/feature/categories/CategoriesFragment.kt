@@ -13,6 +13,7 @@ import com.robsonribeiroft.chuckjokes.R
 import com.robsonribeiroft.chuckjokes.core.gone
 import com.robsonribeiroft.chuckjokes.core.visible
 import com.robsonribeiroft.chuckjokes.databinding.FragmentCategoriesBinding
+import com.robsonribeiroft.chuckjokes.feature.model.CategoriesBindingModel
 import com.robsonribeiroft.chuckjokes.presentation.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -62,14 +63,14 @@ class CategoriesFragment: Fragment() {
                         binding.recyclerView.gone()
                         binding.stateView.setLoading()
                     },
-                    onError = { message: String, categories: List<String>? ->
+                    onError = { message: String, _: CategoriesBindingModel ->
                         binding.recyclerView.gone()
                         binding.stateView.setError(message)
                     },
-                    onSuccess = { categories: List<String> ->
+                    onSuccess = { categoriesBindingModel ->
                         binding.recyclerView.visible()
                         binding.stateView.gone()
-                        adapter.submitList(categories)
+                        adapter.submitList(categoriesBindingModel.categories)
                     }
                 )
             }

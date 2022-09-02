@@ -1,6 +1,6 @@
 package com.robsonribeiroft.chuckjokes.base_presentation
 
-class UiState<T>(
+data class UiState<T>(
     val status: Status = Status.IDLE,
     val data: T,
     val message: String? = null
@@ -12,7 +12,7 @@ class UiState<T>(
         onSuccess: (T) -> Unit
     ) {
         when (status) {
-            Status.SUCCESS -> data?.let { onSuccess(it) } ?: throw RuntimeException()
+            Status.SUCCESS -> onSuccess(data)
             Status.ERROR -> message?.let { onError(it, data) } ?: throw RuntimeException()
             Status.LOADING -> loading()
             else -> Unit

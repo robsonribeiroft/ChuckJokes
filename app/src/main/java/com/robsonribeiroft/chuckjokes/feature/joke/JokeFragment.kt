@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.robsonribeiroft.chuckjokes.presentation.MainViewModel
 import com.robsonribeiroft.chuckjokes.core.gone
 import com.robsonribeiroft.chuckjokes.core.visible
 import com.robsonribeiroft.chuckjokes.databinding.FragmentJokeBinding
 import com.robsonribeiroft.chuckjokes.feature.model.JokeBindingModel
+import com.robsonribeiroft.chuckjokes.presentation.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

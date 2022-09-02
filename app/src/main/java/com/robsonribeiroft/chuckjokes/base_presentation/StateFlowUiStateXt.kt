@@ -4,7 +4,6 @@ import com.robsonribeiroft.chuckjokes.base_presentation.UiState.Status.*
 import com.robsonribeiroft.chuckjokes.domain.core.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 
 fun <T> MutableStateFlow<UiState<T>>.updateOnSuccess(data: T) = update {
@@ -18,8 +17,8 @@ fun <T> MutableStateFlow<UiState<T>>.updateOnResource(resource: Resource<T>, def
     }
 }
 
-fun <T> MutableStateFlow<UiState<T>>.updateOnError(message: String?) = update {
-    UiState(status = ERROR,  data = this.value.data, message = message)
+fun <T> MutableStateFlow<UiState<T>>.updateOnError(message: String?, data: T? = null) = update {
+    UiState(status = ERROR,  data = data ?: this.value.data, message = message)
 }
 
 fun <T> MutableStateFlow<UiState<T>>.updateOnLoading() = update {
@@ -28,16 +27,6 @@ fun <T> MutableStateFlow<UiState<T>>.updateOnLoading() = update {
 
 fun <T> MutableStateFlow<UiState<T>>.updateOnIdle() = update {
     UiState(IDLE, data = this.value.data, message = this.value.message)
-}
-
-suspend fun <T> StateFlow<UiState<T>>.onPostValue(
-    loading: () -> Unit,
-    onError: (message: String, data: T?) -> Unit,
-    onSuccess: (T) -> Unit
-) {
-    this.collectLatest { uiState: UiState<T> ->
-        uiState.stateHandler(loading, onError, onSuccess)
-    }
 }
 
 fun <T> uiStateFlow(initDataState: T) = lazy {

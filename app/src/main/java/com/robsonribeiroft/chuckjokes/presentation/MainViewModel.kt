@@ -26,7 +26,7 @@ class MainViewModel(
     val categories = _categories.asStateFlow()
 
     fun getCategories() {
-        _categories.setLoading()
+        _categories.updateOnLoading()
         viewModelScope.launch(coroutineContext) {
             val result: Resource<List<String>> = getCategoriesUseCase()
             when(result){
@@ -37,7 +37,7 @@ class MainViewModel(
     }
 
     fun getJoke(category: String? = null) {
-        _joke.setLoading()
+        _joke.updateOnLoading()
         viewModelScope.launch(coroutineContext) {
             val result: Resource<String> = getJokeUseCase(GetJokeUseCase.Params(category=category))
             when(result){
