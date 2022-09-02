@@ -39,14 +39,14 @@ class GetCategoriesUseCaseTest {
         testRunDispatcher.cancel()
     }
 
-    @Test
-    fun `WHEN usecase is callled SHOULD be success`() = runTest{
-        coEvery { jokeRepository.getCategories() } coAnswers  { flowOf(emptyList()) }
-        launch(
-            useCase = interactor(),
-            runOnDispatcher = testRunDispatcher,
-            onSuccess = { assertTrue { it.isEmpty() } }
-        )
-    }
+//    @Test
+//    fun `WHEN usecase is callled SHOULD be success`() = runTest{
+//        coEvery { jokeRepository.getCategories() } coAnswers  { flowOf(emptyList()) }
+//        launch(
+//            useCase = interactor(),
+//            runOnDispatcher = testRunDispatcher,
+//            onSuccess = { assertTrue { it.isEmpty() } }
+//        )
+//    }
 
 }
