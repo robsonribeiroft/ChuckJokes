@@ -32,8 +32,8 @@ class MainViewModel(
             when(val result: Resource<List<String>> = getCategoriesUseCase()){
                 is Resource.Success -> _categories.updateOnSuccess(toCategoriesBindingModelMapper(result))
                 is Resource.Failure -> {
-                    Log.d("getCategoriesFailure", result.error.toString())
                     _categories.updateOnError(errorHandler(result.error))
+                    Log.d("getCategoriesFailure", result.error.toString())
                 }
             }
         }
@@ -45,8 +45,8 @@ class MainViewModel(
             when(val result: Resource<String> = getJokeUseCase(GetJokeUseCase.Params(category=category))){
                 is Resource.Success -> _joke.updateOnSuccess(toJokeBindingModelMapper(result))
                 is Resource.Failure -> {
-                    Log.d("getJokeFailure", result.error.toString())
                     _joke.updateOnError(errorHandler(result.error))
+                    Log.d("getJokeFailure", result.error.toString())
                 }
             }
         }
