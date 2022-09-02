@@ -3,4 +3,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="loading">loading</string>
+    <string name="no_internet_connection">Device without internet</string>
+    <string name="unreachable_service">Service is unreachable at the moment</string>
+    <string name="unexpected_error">an unexpected error happened</string>
+    <string name="unknown_host">Unknown service</string>
+    <string name="http">A http error happen</string>
+    <string name="invalid_param">check the information and try again</string>
 </resources>

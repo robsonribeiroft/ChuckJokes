@@ -1,5 +1,6 @@
 package com.robsonribeiroft.chuckjokes.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.robsonribeiroft.chuckjokes.base_feature.emptyString
@@ -19,8 +20,8 @@ class MainViewModel(
     private val coroutineContext: CoroutineContext = Dispatchers.IO
 ): ViewModel() {
 
-    private val _categories by uiStateFlow<CategoriesBindingModel>(CategoriesBindingModel())
-    private val _joke by uiStateFlow<JokeBindingModel>(JokeBindingModel())
+    private val _categories by uiStateFlow(CategoriesBindingModel())
+    private val _joke by uiStateFlow(JokeBindingModel())
 
     val joke = _joke.asStateFlow()
     val categories = _categories.asStateFlow()
@@ -28,10 +29,12 @@ class MainViewModel(
     fun getCategories() {
         _categories.updateOnLoading()
         viewModelScope.launch(coroutineContext) {
-            val result: Resource<List<String>> = getCategoriesUseCase()
-            when(result){
+            when(val result: Resource<List<String>> = getCategoriesUseCase()){
                 is Resource.Success -> _categories.updateOnSuccess(toCategoriesBindingModelMapper(result))
-                is Resource.Failure -> _categories.updateOnError(result.message)
+                is Resource.Failure -> {
+                    Log.d("getCategoriesFailure", result.error.toString())
+                    _categories.updateOnError(errorHandler(result.error))
+                }
             }
         }
     }
@@ -39,10 +42,12 @@ class MainViewModel(
     fun getJoke(category: String? = null) {
         _joke.updateOnLoading()
         viewModelScope.launch(coroutineContext) {
-            val result: Resource<String> = getJokeUseCase(GetJokeUseCase.Params(category=category))
-            when(result){
+            when(val result: Resource<String> = getJokeUseCase(GetJokeUseCase.Params(category=category))){
                 is Resource.Success -> _joke.updateOnSuccess(toJokeBindingModelMapper(result))
-                is Resource.Failure -> _joke.updateOnError(result.message)
+                is Resource.Failure -> {
+                    Log.d("getJokeFailure", result.error.toString())
+                    _joke.updateOnError(errorHandler(result.error))
+                }
             }
         }
     }

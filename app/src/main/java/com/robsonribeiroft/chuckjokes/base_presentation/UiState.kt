@@ -3,12 +3,12 @@ package com.robsonribeiroft.chuckjokes.base_presentation
 data class UiState<T>(
     val status: Status = Status.IDLE,
     val data: T,
-    val message: String? = null
+    val message: UiText? = null
 ) {
 
     fun stateHandler(
         loading: () -> Unit,
-        onError: (message: String, data: T) -> Unit,
+        onError: (message: UiText, data: T) -> Unit,
         onSuccess: (T) -> Unit
     ) {
         when (status) {

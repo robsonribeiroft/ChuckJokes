@@ -10,14 +10,18 @@ fun <T> MutableStateFlow<UiState<T>>.updateOnSuccess(data: T) = update {
     UiState(SUCCESS, data = data)
 }
 
-fun <T> MutableStateFlow<UiState<T>>.updateOnResource(resource: Resource<T>, defaultData: T) = update {
-    when (resource) {
-        is Resource.Success -> UiState(SUCCESS, data = resource.data ?: defaultData)
-        is Resource.Failure -> UiState(ERROR, data = resource.data ?: defaultData, message = resource.message)
-    }
-}
+//fun <T> MutableStateFlow<UiState<T>>.updateOnResource(resource: Resource<T>, defaultData: T) = update {
+//    when (resource) {
+//        is Resource.Success -> UiState(SUCCESS, data = resource.data ?: defaultData)
+//        is Resource.Failure -> UiState(ERROR, data = resource.data ?: defaultData, message = resource.message)
+//    }
+//}
 
-fun <T> MutableStateFlow<UiState<T>>.updateOnError(message: String?, data: T? = null) = update {
+//fun <T> MutableStateFlow<UiState<T>>.updateOnError(message: String?, data: T? = null) = update {
+//    UiState(status = ERROR,  data = data ?: this.value.data, message = message)
+//}
+
+fun <T> MutableStateFlow<UiState<T>>.updateOnError(message: UiText, data: T? = null) = update {
     UiState(status = ERROR,  data = data ?: this.value.data, message = message)
 }
 

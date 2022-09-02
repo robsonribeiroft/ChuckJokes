@@ -1,9 +1,9 @@
 package com.robsonribeiroft.chuckjokes.domain.interactors
 
+import com.robsonribeiroft.chuckjokes.domain.core.Error
 import com.robsonribeiroft.chuckjokes.domain.core.Resource
 import com.robsonribeiroft.chuckjokes.domain.core.isFailure
 import com.robsonribeiroft.chuckjokes.domain.core.isSuccess
-import com.robsonribeiroft.chuckjokes.domain.exception.InvalidParamException
 import com.robsonribeiroft.chuckjokes.domain.repository.JokeRepository
 import io.mockk.coEvery
 import io.mockk.junit4.MockKRule
@@ -46,13 +46,19 @@ class GetJokeUseCaseTest {
     }
 
     @Test
-    fun `when call should return a Resource Failure with a invalid param message`() = runTest {
-        val message = InvalidParamException().message!!
-
+    fun `when call should return a Resource Failure with a invalid param error`() = runTest {
         val result = interactor(GetJokeUseCase.Params(category = null))
 
         assertTrue(result.isFailure())
-        assertEquals(result.message, message)
+        assertTrue(result.error is Error.InvalidParam)
+    }
+
+    @Test
+    fun `when call should return a Resource Failure with a missing param error`() = runTest {
+        val result = interactor()
+
+        assertTrue(result.isFailure())
+        assertTrue(result.error is Error.MissingParam)
     }
 
 

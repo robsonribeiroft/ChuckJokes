@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.robsonribeiroft.chuckjokes.base_presentation.UiText
+import com.robsonribeiroft.chuckjokes.base_presentation.getText
 import com.robsonribeiroft.chuckjokes.core.gone
 import com.robsonribeiroft.chuckjokes.core.visible
 import com.robsonribeiroft.chuckjokes.databinding.FragmentJokeBinding
@@ -51,9 +53,9 @@ class JokeFragment: Fragment() {
                         binding.textJoke.gone()
                         binding.stateView.setLoading()
                     },
-                    onError = { message: String, _: JokeBindingModel ->
+                    onError = { uiText: UiText, _: JokeBindingModel ->
                         binding.textJoke.gone()
-                        binding.stateView.setError(message)
+                        binding.stateView.setError(uiText.getText(this@JokeFragment.requireContext()))
                     },
                     onSuccess = { jokeBindingModel ->
                         binding.stateView.gone()

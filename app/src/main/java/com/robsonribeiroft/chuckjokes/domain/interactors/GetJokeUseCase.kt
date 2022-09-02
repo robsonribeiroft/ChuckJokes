@@ -1,10 +1,9 @@
 package com.robsonribeiroft.chuckjokes.domain.interactors
 
-import com.robsonribeiroft.chuckjokes.base_feature.emptyString
+import com.robsonribeiroft.chuckjokes.domain.core.Error
 import com.robsonribeiroft.chuckjokes.domain.core.Resource
 import com.robsonribeiroft.chuckjokes.domain.core.Resource.Failure
 import com.robsonribeiroft.chuckjokes.domain.core.UseCase
-import com.robsonribeiroft.chuckjokes.domain.exception.InvalidParamException
 import com.robsonribeiroft.chuckjokes.domain.repository.JokeRepository
 
 class GetJokeUseCase(
@@ -13,8 +12,8 @@ class GetJokeUseCase(
 
     override suspend operator fun invoke(params: Params?): Resource<String> {
         return when{
-            params == null -> Failure(InvalidParamException().message ?: emptyString())
-            params.category.isNullOrEmpty() -> Failure(InvalidParamException().message ?: emptyString())
+            params == null -> Failure(Error.MissingParam())
+            params.category.isNullOrEmpty() -> Failure(Error.InvalidParam("category is null or empty"))
             else -> repository.getJokeByCategory(params.category)
         }
     }

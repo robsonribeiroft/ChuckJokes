@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.robsonribeiroft.chuckjokes.R
+import com.robsonribeiroft.chuckjokes.base_presentation.UiText
+import com.robsonribeiroft.chuckjokes.base_presentation.getText
 import com.robsonribeiroft.chuckjokes.core.gone
 import com.robsonribeiroft.chuckjokes.core.visible
 import com.robsonribeiroft.chuckjokes.databinding.FragmentCategoriesBinding
@@ -63,9 +65,9 @@ class CategoriesFragment: Fragment() {
                         binding.recyclerView.gone()
                         binding.stateView.setLoading()
                     },
-                    onError = { message: String, _: CategoriesBindingModel ->
+                    onError = { uiText: UiText, _: CategoriesBindingModel ->
                         binding.recyclerView.gone()
-                        binding.stateView.setError(message)
+                        binding.stateView.setError(uiText.getText(this@CategoriesFragment.requireContext()))
                     },
                     onSuccess = { categoriesBindingModel ->
                         binding.recyclerView.visible()
