@@ -1,6 +1,5 @@
 package com.robsonribeiroft.chuckjokes.presentation
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.robsonribeiroft.chuckjokes.base_presentation.isError
 import com.robsonribeiroft.chuckjokes.base_presentation.isSuccess
@@ -69,9 +68,12 @@ class MainViewModelTest {
     fun `when getCategories is called should change uiState for Error`() {
         coEvery { getCategoriesUseCase() }.coAnswers { Resource.Failure(Error.Default()) }
 
+        val previousDataState = viewModel.categories.value.data
+
         viewModel.getCategories()
 
         assertTrue(viewModel.categories.value.isError())
+        assertEquals(previousDataState, viewModel.categories.value.data)
     }
 
 
@@ -89,16 +91,19 @@ class MainViewModelTest {
     fun `when getJoke is called should change uiState for Error`() {
         coEvery { getJokeUseCase(any()) }.coAnswers { Resource.Failure(Error.Default()) }
 
+        val previousDataState = viewModel.joke.value.data
+
         viewModel.getJoke(CATEGORY_STUB)
 
         assertTrue(viewModel.joke.value.isError())
+        assertEquals(previousDataState, viewModel.joke.value.data)
     }
 
 
     companion object{
         val CATEGORIES_STUB = listOf("Cat 1","Cat 2","Cat 3","Cat 4" )
-        val CATEGORY_STUB = "Cat 1"
-        val JOKE_STUB = "JOKE DUMMY"
+        const val CATEGORY_STUB = "Cat 1"
+        const val JOKE_STUB = "JOKE DUMMY"
     }
 
 }
