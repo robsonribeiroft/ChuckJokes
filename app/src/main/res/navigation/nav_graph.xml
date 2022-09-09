@@ -10,14 +10,21 @@
         android:label="CategoriesFragment" >
         <action
             android:id="@+id/action_categoriesFragment_to_jokeFragment"
-            app:destination="@id/jokeFragment" />
-        <argument
-            android:name="category"
-            app:argType="string"
-            android:defaultValue='""' />
+            app:destination="@id/jokeFragment" >
+            <argument
+                android:name="category"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="@null"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/jokeFragment"
         android:name="com.robsonribeiroft.chuckjokes.feature.joke.JokeFragment"
-        android:label="JokeFragment" />
+        android:label="JokeFragment" >
+        <argument
+            android:name="category"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

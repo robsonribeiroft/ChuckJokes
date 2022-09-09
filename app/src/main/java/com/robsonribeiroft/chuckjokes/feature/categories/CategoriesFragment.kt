@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.robsonribeiroft.chuckjokes.R
 import com.robsonribeiroft.chuckjokes.base_presentation.UiText
@@ -48,8 +49,8 @@ class CategoriesFragment: Fragment() {
         )
         binding.recyclerView.adapter = adapter.apply {
             onItemClicked = { categorySelected ->
-                val bundle = bundleOf("category" to categorySelected)
-                findNavController().navigate(R.id.action_categoriesFragment_to_jokeFragment, bundle)
+                val directions = CategoriesFragmentDirections.actionCategoriesFragmentToJokeFragment(categorySelected)
+                findNavController().navigate(directions)
             }
         }
 

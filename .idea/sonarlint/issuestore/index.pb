@@ -1,6 +1,4 @@
 
-x
-Happ/src/main/java/com/robsonribeiroft/chuckjokes/feature/MainActivity.kt,0/f/0f0c40b2e878fb679b63f08ce3c0e37d71085085
 w
 Gapp/src/main/java/com/robsonribeiroft/chuckjokes/domain/core/UseCase.kt,7/8/783ba303c7a31f392aa89afd0b2578253e4bdff1
 ˆ

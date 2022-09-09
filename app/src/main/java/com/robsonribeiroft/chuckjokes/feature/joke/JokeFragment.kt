@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.robsonribeiroft.chuckjokes.base_presentation.UiText
 import com.robsonribeiroft.chuckjokes.base_presentation.getText
 import com.robsonribeiroft.chuckjokes.core.gone
@@ -22,6 +23,7 @@ class JokeFragment: Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by sharedViewModel<MainViewModel>()
+    private val arguments: JokeFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +39,7 @@ class JokeFragment: Fragment() {
 
         setupViews()
         setupObservers()
-        viewModel.getJoke(arguments?.getString("category"))
+        viewModel.getJoke(arguments.category)
     }
 
     private fun setupViews() = with(binding) {
